@@ -58,7 +58,7 @@ def download_and_extract_windows_binaries(destdir):
 
     for ln, fn in libs.items():
         url = url_fmt.format(repo.get(ln, 'fabiopedrosa'))
-        srcfile = urljoin(, fn)
+        srcfile = urljoin(url, fn)
         destfile = os.path.join(destdir, fn)
         if os.path.exists(destfile + ".keep"):
             print('Using local copy of  "{}"'.format(srcfile))
