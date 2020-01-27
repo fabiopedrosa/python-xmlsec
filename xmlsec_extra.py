@@ -27,7 +27,7 @@ def get_prebuilt_libs(download_dir, static_include_dirs, static_library_dirs):
 
 
 def download_and_extract_windows_binaries(destdir):
-    url = "https://github.com/talebi1/libxml2-win-binaries/releases/download/master/"
+    url_fmt = "https://github.com/{}/libxml2-win-binaries/releases/download/master/"
     if sys.version_info < (3, 5):
         if sys.maxsize > 2147483647:
             suffix = "vs2008.win64"
@@ -39,10 +39,15 @@ def download_and_extract_windows_binaries(destdir):
         else:
             suffix = "win32"
 
+    repo = {
+        'openssl': 'talebi1',
+        'xmlsec': 'talebi1',
+    }
+
     libs = {
-        'libxml2': 'libxml2-2.9.4.{}.zip'.format(suffix),
-        'libxslt': 'libxslt-1.1.29.{}.zip'.format(suffix),
-        'zlib': 'zlib-1.2.8.{}.zip'.format(suffix),
+        'libxml2': 'libxml2-2.9.5.{}.zip'.format(suffix),
+        'libxslt': 'libxslt-1.1.30.{}.zip'.format(suffix),
+        'zlib': 'zlib-1.2.11.{}.zip'.format(suffix),
         'iconv': 'iconv-1.14.{}.zip'.format(suffix),
         'openssl': 'openssl-1.0.1.{}.zip'.format(suffix),
         'xmlsec': 'xmlsec-1.2.24.{}.zip'.format(suffix),
@@ -52,7 +57,8 @@ def download_and_extract_windows_binaries(destdir):
         os.makedirs(destdir)
 
     for ln, fn in libs.items():
-        srcfile = urljoin(url, fn)
+        url = url_fmt.format(repo.get(ln, 'fabiopedrosa'))
+        srcfile = urljoin(, fn)
         destfile = os.path.join(destdir, fn)
         if os.path.exists(destfile + ".keep"):
             print('Using local copy of  "{}"'.format(srcfile))
